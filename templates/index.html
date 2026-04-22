@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File Integrity System</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* ── Reset & Variables ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Ultra-clean Minimalist Palette */
+      --bg:           #fafafa;
+      --surface:      #ffffff;
+      --border:       #eaeaea;
+      --border-hover: #cccccc;
+      --text-main:    #171717;
+      --text-muted:   #666666;
+      --accent:       #0070f3; /* Vercel/Stripe Blue */
+      --danger:       #e00;
+      --success:      #007a5a;
+      
+      /* Typography */
+      --sans:         'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --mono:         'Fira Code', monospace;
+      
+      --radius:       8px;
+      --shadow-sm:    0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md:    0 8px 24px rgba(0,0,0,0.08);
+      --transition:   all 0.15s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    [hidden] { display: none !important; }
+
+    /* ── Header ──────────────────────────────────────────────────── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.85);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo { display: flex; align-items: center; gap: 0.5rem; }
+    .logo-icon { font-size: 1.2rem; color: var(--accent); font-weight: bold; }
+    .logo-text { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.02em; }
+
+    nav { display: flex; gap: 1.5rem; }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    nav a:hover { color: var(--text-main); }
+
+    /* ── Hero ────────────────────────────────────────────────────── */
+    .hero {
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--surface);
+      padding: 0.4rem 1rem;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.2rem;
+      color: var(--text-main);
+    }
+
+    .hero h1 .accent { color: var(--accent); }
+
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 550px;
+      margin: 0 auto;
+    }
+
+    /* ── Main Layout ─────────────────────────────────────────────── */
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      padding: 0 2rem 5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ── Cards ───────────────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      padding: 2.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-hover);
+    }
+
+    .card.wide { grid-column: 1 / -1; }
+
+    .card-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    /* ── Drop Zone ───────────────────────────────────────────────── */
+    .drop-zone {
+      border: 2px dashed var(--border-hover);
+      border-radius: var(--radius);
+      padding: 3rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      background: var(--bg);
+      transition: var(--transition);
+      margin-bottom: 1.5rem;
+    }
+
+    .drop-zone:hover, .drop-zone.drag {
+      border-color: var(--accent);
+      background: rgba(0, 112, 243, 0.04);
+    }
+
+    .drop-icon {
+      font-size: 1.8rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .drop-text {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+
+    .drop-hint {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: inherit;
+      font-family: inherit;
+      font-weight: 600;
+      padding: 0;
+    }
+    .link-btn:hover { text-decoration: underline; }
+
+    /* ── Buttons ─────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: var(--transition);
+      margin-bottom: 1.5rem;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: var(--text-main);
+      color: var(--surface);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: #000000;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+    .btn-primary:disabled {
+      background: var(--bg);
+      border-color: var(--border);
+      color: #999;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      border-color: var(--border-hover);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      border-color: var(--text-main);
+      background: var(--bg);
+    }
+    .btn-secondary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text-main);
+      width: auto;
+    }
+    .btn-ghost:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--border-hover);
+    }
+
+    /* ── Input group ─────────────────────────────────────────────── */
+    .input-group { margin-bottom: 1.5rem; }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border-hover);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      padding: 0.8rem 1rem;
+      outline: none;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .input-group input:focus { 
+      border-color: var(--accent); 
+      box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.15);
+    }
+
+    .input-group input::placeholder { color: #a1a1aa; }
+
+    /* ── Result box ──────────────────────────────────────────────── */
+    .result-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      animation: slideDown 0.2s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .result-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .result-row:first-child { padding-top: 0; }
+
+    .result-row .label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      min-width: 90px;
+    }
+
+    .result-row .value {
+      font-size: 0.9rem;
+      color: var(--text-main);
+      word-break: break-all;
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .mono { font-family: var(--mono); }
+
+    .hash-val {
+      font-size: 0.85rem !important;
+      color: var(--text-main);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .badge-ok { 
+      background: #e6f6f1; 
+      color: var(--success); 
+      border: 1px solid #bce3d6;
+    }
+
+    /* ── Verdict Banner ──────────────────────────────────────────── */
+    .verdict-banner {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.2rem;
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .verdict-banner.intact  {
+      background: #e6f6f1;
+      border: 1px solid #bce3d6;
+      color: var(--success);
+    }
+    .verdict-banner.tampered {
+      background: #fce8e8;
+      border: 1px solid #f5c2c2;
+      color: var(--danger);
+    }
+
+    .verdict-icon { font-size: 1.2rem; }
+
+    /* ── Files table ─────────────────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    thead th {
+      text-align: left;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 1rem;
+      border-bottom: 2px solid var(--border);
+      background: var(--bg);
+    }
+    
+    thead th:first-child { border-top-left-radius: 6px; }
+    thead th:last-child { border-top-right-radius: 6px; }
+
+    tbody tr { transition: var(--transition); }
+    tbody tr:hover { background: var(--bg); }
+
+    tbody td {
+      padding: 1rem;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    .empty-msg {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 3rem 0;
+      background: var(--bg);
+      border-radius: 6px;
+      border: 1px dashed var(--border-hover);
+    }
+
+    /* ── Toast ───────────────────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 1.2rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      background: var(--text-main);
+      box-shadow: var(--shadow-md);
+      color: var(--surface);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(15px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 999;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error   { border-left: 4px solid var(--danger); }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero { padding: 4rem 1.5rem 2rem; }
+      main { grid-template-columns: 1fr; padding: 1rem 1.5rem; gap: 1.5rem; }
+      .card { padding: 2rem 1.5rem; }
+      .card.wide { grid-column: 1; }
+      header { padding: 1rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <span class="logo-icon">▲</span>
+      <span class="logo-text">FileGuard</span>
+    </div>
+    <nav>
+      <a href="#upload-section">Upload</a>
+      <a href="#verify-section">Verify</a>
+      <a href="#files-section">Files</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <p class="hero-tag">SHA-256 · S3 · DynamoDB</p>
+    <h1>Unbreakable<br /><span class="accent">File Integrity</span></h1>
+    <p class="hero-sub">Upload once. Verify forever. Know instantly if your files have been tampered with.</p>
+  </section>
+
+  <main>
+
+    <section id="upload-section" class="card">
+      <div class="card-label">01</div>
+      <h2>Upload File</h2>
+      <p class="card-desc">Your file is securely stored and fingerprinted via SHA-256.</p>
+
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" hidden />
+        <div class="drop-icon">↑</div>
+        <p class="drop-text">Drag & drop or <button class="link-btn" onclick="document.getElementById('fileInput').click()">browse</button></p>
+        <p class="drop-hint" id="fileName">No file selected</p>
+      </div>
+
+      <button class="btn btn-primary" id="uploadBtn" disabled>Upload &amp; Hash</button>
+
+      <div class="result-box" id="uploadResult" hidden>
+        <div class="result-row"><span class="label">Filename</span><span class="value mono" id="upFilename">—</span></div>
+        <div class="result-row"><span class="label">SHA-256</span><span class="value mono hash-val" id="upHash">—</span></div>
+        <div class="result-row"><span class="label">Size</span><span class="value mono" id="upSize">—</span></div>
+        <div class="result-row"><span class="label">Status</span><span class="value badge badge-ok" id="upStatus">—</span></div>
+      </div>
+    </section>
+
+    <section id="verify-section" class="card">
+      <div class="card-label">02</div>
+      <h2>Verify Integrity</h2>
+      <p class="card-desc">Re-download, re-hash, and cross-reference records.</p>
+
+      <div class="input-group">
+        <label for="verifyFilename">Filename</label>
+        <input type="text" id="verifyFilename" placeholder="e.g. report.pdf" autocomplete="off" />
+      </div>
+
+      <button class="btn btn-secondary" id="verifyBtn">Verify File</button>
+
+      <div class="result-box" id="verifyResult" hidden>
+        <div class="verdict-banner" id="verdictBanner">
+          <span class="verdict-icon" id="verdictIcon">—</span>
+          <span class="verdict-text" id="verdictText">—</span>
+        </div>
+        <div class="result-row"><span class="label">Stored Hash</span><span class="value mono hash-val" id="vrStoredHash">—</span></div>
+        <div class="result-row"><span class="label">Current Hash</span><span class="value mono hash-val" id="vrCurrentHash">—</span></div>
+        <div class="result-row"><span class="label">Uploaded</span><span class="value mono" id="vrUploadedAt">—</span></div>
+      </div>
+    </section>
+
+    <section id="files-section" class="card wide">
+      <div class="card-label">03</div>
+      <h2>Tracked Files</h2>
+      <p class="card-desc">Complete immutable record of all registered files.</p>
+
+      <button class="btn btn-ghost" id="loadFilesBtn">Refresh Registry</button>
+
+      <div id="filesTable" hidden>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Filename</th>
+                <th>SHA-256 Checksum</th>
+                <th>Size (KB)</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="filesBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="empty-msg" id="emptyMsg" hidden>No files currently registered.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>FileGuard · Secure Object Verification · AWS Cloud</p>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function showToast(msg, type = "info") {
+  const t = $("toast");
+  t.textContent = msg;
+  t.className   = `toast show ${type}`;
+  setTimeout(() => t.className = "toast", 3000);
+}
+
+function setLoading(btn, loading) {
+  btn.disabled    = loading;
+  btn.dataset.orig = btn.dataset.orig || btn.textContent;
+  btn.textContent = loading ? "Please wait…" : btn.dataset.orig;
+}
+
+const dropZone   = $("dropZone");
+const fileInput  = $("fileInput");
+const uploadBtn  = $("uploadBtn");
+
+fileInput.addEventListener("change", () => {
+  const f = fileInput.files[0];
+  if (f) {
+    $("fileName").textContent = `${f.name} (${(f.size/1024).toFixed(1)} KB)`;
+    uploadBtn.disabled = false;
+  }
+});
+
+dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("drag"); });
+dropZone.addEventListener("dragleave", ()  => dropZone.classList.remove("drag"));
+dropZone.addEventListener("drop", e => {
+  e.preventDefault();
+  dropZone.classList.remove("drag");
+  const f = e.dataTransfer.files[0];
+  if (f) {
+    const dt = new DataTransfer();
+    dt.items.add(f);
+    fileInput.files = dt.files;
+    $("fileName").textContent = `${f.name} (${(f.size/1024).toFixed(1)} KB)`;
+    uploadBtn.disabled = false;
+  }
+});
+
+uploadBtn.addEventListener("click", async () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  setLoading(uploadBtn, true);
+  $("uploadResult").hidden = true;
+
+  const fd = new FormData();
+  fd.append("file", file);
+
+  try {
+    const res  = await fetch("/upload", { method: "POST", body: fd });
+    const data = await res.json();
+
+    if (data.success) {
+      $("upFilename").textContent = data.filename;
+      $("upHash").textContent     = data.hash;
+      $("upSize").textContent     = `${data.size_kb} KB`;
+      $("upStatus").textContent   = "Stored ✓";
+      $("uploadResult").hidden    = false;
+      showToast("File uploaded successfully!", "success");
+    } else {
+      showToast(data.error || "Upload failed.", "error");
+    }
+  } catch (err) {
+    showToast("Network error: " + err.message, "error");
+  } finally {
+    setLoading(uploadBtn, false);
+  }
+});
+
+$("verifyBtn").addEventListener("click", async () => {
+  const filename = $("verifyFilename").value.trim();
+  if (!filename) { showToast("Please enter a filename.", "error"); return; }
+
+  const btn = $("verifyBtn");
+  setLoading(btn, true);
+  $("verifyResult").hidden = true;
+
+  try {
+    const res  = await fetch("/verify", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ filename }),
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      const intact  = data.intact;
+      const banner  = $("verdictBanner");
+      banner.className        = `verdict-banner ${intact ? "intact" : "tampered"}`;
+      $("verdictIcon").textContent = intact ? "✓" : "✗";
+      $("verdictText").textContent = data.status;
+      $("vrStoredHash").textContent  = data.stored_hash;
+      $("vrCurrentHash").textContent = data.current_hash;
+      $("vrUploadedAt").textContent  = data.uploaded_at;
+      $("verifyResult").hidden = false;
+      showToast(`File is ${data.status}`, intact ? "success" : "error");
+    } else {
+      showToast(data.error || "Verification failed.", "error");
+    }
+  } catch (err) {
+    showToast("Network error: " + err.message, "error");
+  } finally {
+    setLoading(btn, false);
+  }
+});
+
+$("loadFilesBtn").addEventListener("click", async () => {
+  const btn = $("loadFilesBtn");
+  setLoading(btn, true);
+  $("filesTable").hidden = true;
+  $("emptyMsg").hidden   = true;
+
+  try {
+    const res  = await fetch("/files");
+    const data = await res.json();
+
+    if (data.success) {
+      const files = data.files;
+      if (!files.length) {
+        $("emptyMsg").hidden = false;
+      } else {
+        const tbody = $("filesBody");
+        tbody.innerHTML = "";
+        files.forEach(f => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td class="mono">${f.filename}</td>
+            <td class="mono hash-val">${f.hash || "—"}</td>
+            <td class="mono">${f.size ? (f.size/1024).toFixed(2) : "—"}</td>
+            <td class="mono">${f.uploaded_at || "—"}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+        $("filesTable").hidden = false;
+      }
+    } else {
+      showToast(data.error || "Failed to load files.", "error");
+    }
+  } catch (err) {
+    showToast("Network error: " + err.message, "error");
+  } finally {
+    setLoading(btn, false);
+  }
+});
+</script>
+</body>
+</html>
