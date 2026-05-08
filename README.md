@@ -1,224 +1,245 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" width="140"/>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" width="150"/>
 
-# FILEGUARD X
+# FILEGUARD 
 
-### ⚡ AI-Ready Cloud File Integrity & Tamper Detection Platform
+### ⚡ Next-Generation Cloud File Integrity & Tamper Detection System
 
-<img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=22&pause=1000&color=00F7FF&center=true&vCenter=true&width=900&lines=SHA-256+Cryptographic+Verification;AWS+Cloud-Native+Architecture;Real-Time+Tamper+Detection;Built+with+Flask+%2B+Amazon+S3+%2B+DynamoDB;Cloud+Computing+Laboratory+Project" />
+<img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=24&pause=1000&color=00F7FF&center=true&vCenter=true&width=950&lines=Cloud-Native+Cybersecurity+Platform;SHA-256+Integrity+Verification;Amazon+S3+%2B+DynamoDB+Powered;Detect+Tampered+Files+Instantly;Built+for+Cloud+Computing+Laboratory" />
 
 <br/>
 
 <img src="https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
-<img src="https://img.shields.io/badge/Flask-Backend-black?style=for-the-badge&logo=flask"/>
+<img src="https://img.shields.io/badge/Flask-Web_Framework-black?style=for-the-badge&logo=flask"/>
 <img src="https://img.shields.io/badge/AWS-Cloud-orange?style=for-the-badge&logo=amazonaws"/>
-<img src="https://img.shields.io/badge/Amazon_S3-Storage-FF9900?style=for-the-badge&logo=amazons3"/>
-<img src="https://img.shields.io/badge/DynamoDB-NoSQL-4053D6?style=for-the-badge&logo=amazondynamodb"/>
-<img src="https://img.shields.io/badge/SHA--256-Secure-success?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/STATUS-ACTIVE-00ff99?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/Amazon_S3-Object_Storage-FF9900?style=for-the-badge&logo=amazons3"/>
+<img src="https://img.shields.io/badge/DynamoDB-NoSQL_Database-4053D6?style=for-the-badge&logo=amazondynamodb"/>
+<img src="https://img.shields.io/badge/SHA--256-Cryptographic_Security-00C853?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/STATUS-LIVE-00E5FF?style=for-the-badge"/>
 
 <br/><br/>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0f0f,100:00F7FF&height=120&section=header&text=UPLOAD%20%E2%86%92%20VERIFY%20%E2%86%92%20DETECT&fontSize=30&fontColor=ffffff&animation=fadeIn"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&height=180&text=UPLOAD%20•%20VERIFY%20•%20PROTECT&fontAlign=50&fontAlignY=35&color=0:0B1020,50:00F7FF,100:00FFB3&fontColor=ffffff&fontSize=34&animation=fadeIn"/>
 
 </div>
 
 ---
 
-# 🌌 Overview
+# 🌌 What is FileGuard X?
 
-**FileGuard X** is a futuristic cloud-native cybersecurity platform that verifies whether a file has been modified, corrupted, or tampered with after upload.
+**FileGuard X** is a futuristic cloud-based cybersecurity system designed to verify whether files stored in the cloud have been modified, corrupted, replaced, or tampered with.
 
-The system uses:
+The platform creates a unique **SHA-256 cryptographic fingerprint** for every uploaded file and securely stores it using AWS cloud services.
 
-- 🔐 **SHA-256 cryptographic hashing**
-- ☁️ **Amazon S3 cloud object storage**
-- ⚡ **Amazon DynamoDB ultra-fast metadata storage**
-- 🖥️ **Flask backend architecture**
-- 🌐 **Interactive browser-based UI**
+During verification, the file is downloaded again, re-hashed, and compared with the original fingerprint.
 
-Even a **single-bit modification** creates a completely different fingerprint.
+Even changing **1 character** inside the file creates a completely different SHA-256 hash.
 
-That means tampering becomes instantly detectable.
-
----
-
-# ⚡ Core Concept
+That means:
 
 ```text
-UPLOAD FILE
-     │
-     ▼
-GENERATE SHA-256 HASH
-     │
-     ▼
-STORE FILE IN AMAZON S3
-     │
-     ▼
-STORE HASH IN DYNAMODB
-     │
-────────────────────────────
-     │
-VERIFY FILE LATER
-     │
-     ▼
-DOWNLOAD FILE FROM S3
-     │
-     ▼
-GENERATE NEW HASH
-     │
-     ▼
-COMPARE BOTH HASHES
-     │
- ┌──────────────┐
- │ HASH MATCH ? │
- └──────┬───────┘
-        │
-   YES  │  NO
-        │
-        ▼
-  ✅ INTACT
-  ❌ TAMPERED
+MATCHED HASH   →   ✅ FILE IS SAFE
+DIFFERENT HASH →   ❌ FILE TAMPERED
 ```
 
 ---
 
-# 🌍 Real World Applications
+# ⚡ Intelligent Verification Pipeline
 
-| Industry | Use Case |
+                                                  
+                              ╔════════════════════════════════════════════════════════════╗
+                              ║                    FILEGUARD X ENGINE                      ║
+                              ╚════════════════════════════════════════════════════════════╝
+                                        
+                                                📤 USER UPLOADS FILE
+                                                            │
+                                                            ▼
+                                              ⚡ GENERATE SHA-256 FINGERPRINT
+                                                            │
+                                                            ▼
+                                                 ☁️ STORE FILE IN AMAZON S3
+                                                            │
+                                                            ▼
+                                              🧠 STORE HASH INSIDE DYNAMODB
+                                                            │
+                                                    🔍 VERIFY REQUEST
+                                                            │
+                                                            ▼
+                                                ☁️ DOWNLOAD FILE FROM S3
+                                                            │
+                                                            ▼
+                                               ⚡ GENERATE NEW SHA-256 HASH
+                                                            │
+                                                            ▼
+                                                  🧠 FETCH ORIGINAL HASH
+                                                            │
+                                                            ▼
+                                                   🔄 COMPARE BOTH HASHES
+                                                            │
+                                                 ┌──────────┴──────────┐
+                                                 │                     │
+                                                 ▼                     ▼
+                                        
+                                           ✅ INTACT              ❌ TAMPERED
+                                           File Safe              File Modified
+                                                  
+
+---
+
+# 🌍 Real-World Applications
+
+
+
+| Industry | Usage |
 |---|---|
 | 🏥 Healthcare | Verify medical reports are unchanged |
-| 🏦 Banking | Protect financial documents |
-| 🎓 Universities | Prevent modification of student records |
-| ⚖️ Legal Systems | Preserve digital evidence integrity |
-| 🏢 Enterprises | Monitor sensitive cloud files |
-| ☁️ Cloud Storage | Detect unauthorized file replacement |
+| 🏦 Banking | Detect unauthorized modification of financial files |
+| 🎓 Universities | Protect certificates and student records |
+| ⚖️ Legal Systems | Maintain digital evidence integrity |
+| 🏢 Enterprises | Monitor sensitive cloud documents |
+| ☁️ Cloud Platforms | Detect replaced or modified uploaded files |
+
+
 
 ---
 
-# 🧠 How It Works
-
-## 📤 Upload Engine
-
-When the user uploads a file:
-
-1. Flask backend receives the file
-2. SHA-256 fingerprint generated
-3. File stored securely in Amazon S3
-4. Hash + metadata stored in DynamoDB
-5. System returns verification-ready status
-
----
-
-## 🔍 Verification Engine
-
-When verification starts:
-
-1. File downloaded from S3
-2. New SHA-256 hash generated
-3. Stored hash fetched from DynamoDB
-4. Both hashes compared securely
-5. Final result displayed:
+# 🏗️ Advanced Cloud Architecture
 
 ```text
-✅ INTACT     → File is safe
-❌ TAMPERED  → File modified
-```
-
----
-
-# 🏗️ Cloud Architecture
-
-```text
-┌───────────────────────────────┐
-│        Frontend Layer         │
-│ HTML • CSS • JavaScript       │
-└──────────────┬────────────────┘
-               │
-               ▼
-┌───────────────────────────────┐
-│         Flask Backend         │
-│            app.py             │
-└───────┬───────────┬───────────┘
-        │           │
-        ▼           ▼
-┌─────────────┐ ┌────────────────┐
-│ Amazon S3  │ │ Amazon DynamoDB│
-│ File Store │ │ Hash Metadata  │
-└─────────────┘ └────────────────┘
+                                   ┌──────────────────────────────────────────┐
+                                   │              FRONTEND LAYER              │
+                                   │      HTML • CSS • JavaScript UI          │
+                                   └────────────────┬─────────────────────────┘
+                                                    │ HTTP Requests
+                                                    ▼
+                                   ┌──────────────────────────────────────────┐
+                                   │             FLASK BACKEND                │
+                                   │                app.py                    │
+                                   │                                          │
+                                   │   /upload   /verify   /files             │
+                                   └──────────────┬──────────────┬────────────┘
+                                                  │              │
+                                                  ▼              ▼
+                                   
+                                   ┌────────────────┐       ┌───────────────────┐
+                                   │   AMAZON S3    │       │ AMAZON DYNAMODB   │
+                                   │                │       │                   │
+                                   │ File Storage   │       │ SHA-256 Metadata  │
+                                   │ Uploaded Files │       │ File Integrity DB │
+                                   └────────────────┘       └───────────────────┘
 ```
 
 ---
 
 # ☁️ AWS Services Used
 
+
+
 | AWS Service | Purpose |
 |---|---|
-| Amazon EC2 | Hosts Flask application |
-| Amazon S3 | Stores uploaded files |
-| DynamoDB | Stores SHA-256 hashes |
-| IAM | Secure permissions |
-| Security Groups | Firewall access control |
-| SSH | Secure remote EC2 access |
+| 🖥️ Amazon EC2 | Hosts Flask application |
+| ☁️ Amazon S3 | Stores uploaded files securely |
+| ⚡ DynamoDB | Stores hashes and metadata |
+| 🔐 IAM | Access and permission control |
+| 🌐 Security Groups | Firewall and network security |
+| 💻 SSH | Secure EC2 remote access |
+
 
 ---
 
-# 🛡️ Security Features
+# 🛡️ Cybersecurity Features
 
-### 🔐 SHA-256 Cryptographic Fingerprinting
 
-Industry-standard irreversible hashing algorithm.
 
----
+| Feature | Protection |
+|---|---|
+| 🔐 SHA-256 Fingerprinting | Detects even 1-bit modification |
+| ⚡ Secure Hash Comparison | Prevents timing-based attacks |
+| ☁️ Storage Isolation | Separates files and metadata |
+| 🧼 Filename Sanitization | Blocks malicious filenames |
+| 🔑 Environment Variables | Protects AWS credentials |
+| 🛡️ Tamper Detection Engine | Real-time integrity verification |
+| 🧠 Modular Architecture | Secure and scalable structure |
 
-### ⚡ Timing-Safe Comparison
 
-Uses secure comparison methods to prevent timing attacks.
-
----
-
-### ☁️ Cloud Storage Isolation
-
-Files and metadata stored separately for enhanced protection.
 
 ---
 
-### 🧼 Secure Filename Sanitization
+# 📸 Project Showcase
 
-Prevents malicious file path injection attacks.
+## 🖥️ Main Dashboard
+
+<img src="screenshots/upload.png" width="100%"/>
+
+<br/>
+
+## 🔍 File Verification System
+
+<img src="screenshots/verify.png" width="100%"/>
+
+<br/>
+
+## ☁️ Amazon S3 Storage
+
+<img src="screenshots/s3.png" width="100%"/>
+
+<br/>
+
+## ⚡ DynamoDB Metadata Table
+
+<img src="screenshots/dynamodb.png" width="100%"/>
+
+<br/>
+
+## 🖥️ AWS EC2 Deployment
+
+<img src="screenshots/ec2.png" width="100%"/>
 
 ---
 
-### 🔑 Environment Variable Protection
-
-AWS credentials are never hardcoded into source files.
-
----
-
-
-# 💻 Terminal Execution
+# 💻 Live Terminal Execution
 
 ```bash
 $ python app.py
 
- * Serving Flask app 'FileGuard X'
- * Running on http://127.0.0.1:5000
+╔══════════════════════════════════════════╗
+║          FILEGUARD X INITIALIZED         ║
+╚══════════════════════════════════════════╝
 
-[SYSTEM] Uploading report.pdf...
+[✓] Flask Server Started
+[✓] AWS Services Connected
+[✓] S3 Bucket Ready
+[✓] DynamoDB Table Active
 
-✓ SHA-256 Fingerprint Generated
-✓ File Stored in Amazon S3
-✓ Metadata Saved in DynamoDB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[SYSTEM] Starting Verification...
+📤 Upload Request Received:
+    File → report.pdf
 
-✓ Downloaded File from S3
-✓ Recomputed SHA-256 Hash
-✓ Comparing Fingerprints...
+⚡ Generating SHA-256 Fingerprint...
+✓ Fingerprint Created Successfully
+
+☁️ Uploading File to Amazon S3...
+✓ Upload Completed
+
+🧠 Saving Metadata to DynamoDB...
+✓ Metadata Stored
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔍 Verification Process Started...
+
+☁️ Downloading File from S3...
+✓ File Retrieved Successfully
+
+⚡ Recomputing SHA-256 Hash...
+✓ Hash Generated
+
+🔄 Comparing Original & Current Hash...
 
 RESULT:
-✓ INTACT
+✅ INTACT — No Tampering Detected
 ```
 
 ---
@@ -229,6 +250,7 @@ RESULT:
 
 ```bash
 git clone https://github.com/yourusername/file-integrity-system.git
+
 cd file-integrity-system
 ```
 
@@ -257,7 +279,7 @@ FLASK_SECRET_KEY=your_secret_key
 
 ---
 
-## Run Application
+## Start Application
 
 ```bash
 python app.py
@@ -267,7 +289,7 @@ python app.py
 
 # ☁️ EC2 Deployment Commands
 
-## Connect to EC2
+## Connect to EC2 Instance
 
 ```bash
 ssh -i file-integrity-key.pem ubuntu@18.208.193.44
@@ -275,7 +297,7 @@ ssh -i file-integrity-key.pem ubuntu@18.208.193.44
 
 ---
 
-## Activate Virtual Environment
+## Activate Python Virtual Environment
 
 ```bash
 source venv/bin/activate
@@ -291,7 +313,7 @@ cd file-integrity-system
 
 ---
 
-## Run Flask Server
+## Run Flask Application
 
 ```bash
 python app.py
@@ -321,34 +343,39 @@ file-integrity-system/
 
 ---
 
-# 🚀 Future Scope
+# 🚀 Future Vision
 
-- 🔔 Email alert system
-- 👤 User authentication
-- 📊 Analytics dashboard
-- 🔄 Automatic scheduled verification
-- 🔐 AES-256 encryption
-- ☁️ Multi-cloud support
-- 📱 Mobile optimization
-- 🤖 AI-powered anomaly detection
+
+
+| Planned Feature | Description |
+|---|---|
+| 🔔 Smart Alerts | Email notifications for tampering |
+| 👤 Authentication | Multi-user secure login system |
+| 📊 Analytics Dashboard | File activity monitoring |
+| 🔄 Auto Verification | Scheduled integrity scanning |
+| 🔐 AES-256 Encryption | File encryption before upload |
+| ☁️ Multi-Cloud Support | AWS + Azure + Google Cloud |
+| 📱 Mobile Optimization | Responsive mobile UI |
+| 🤖 AI Threat Detection | Intelligent anomaly monitoring |
+
+
 
 ---
 
 # 👨‍💻 Author
 
-<div align="center">
+
 
 # Manjunath G K
 
 ### Cloud Computing Laboratory — BCS 601
 
-### Guided By:
-## Prof. Mohan K
+### Guided By
 
-University BDT College of Engineering
+# Prof. Mohan K
+
+University BDT College of Engineering Davanagere Karnataka - 577004
 
 <br/>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:00F7FF,100:0f0f0f&height=120&section=footer"/>
-
-</div>
+<img src="https://capsule-render.vercel.app/api?type=waving&height=160&section=footer&color=0:00F7FF,50:0B1020,100:000000"/>
