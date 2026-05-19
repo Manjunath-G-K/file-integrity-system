@@ -166,38 +166,6 @@ DIFFERENT HASH →   ❌ FILE TAMPERED
 
 ---
 
-# 📸 Project Showcase
-
-## 🖥️ Main Dashboard
-
-<img src="screenshots/upload.png" width="100%"/>
-
-<br/>
-
-## 🔍 File Verification System
-
-<img src="screenshots/verify.png" width="100%"/>
-
-<br/>
-
-## ☁️ Amazon S3 Storage
-
-<img src="screenshots/s3.png" width="100%"/>
-
-<br/>
-
-## ⚡ DynamoDB Metadata Table
-
-<img src="screenshots/dynamodb.png" width="100%"/>
-
-<br/>
-
-## 🖥️ AWS EC2 Deployment
-
-<img src="screenshots/ec2.png" width="100%"/>
-
----
-
 # 💻 Live Terminal Execution
 
 ```bash
